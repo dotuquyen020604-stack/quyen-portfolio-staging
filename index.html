@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quyen Pham — Marketing &amp; AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8F6F2; --fg: #0D0D0D; --accent: #E8421A;
+      --muted: #888; --border: #E2DDD7; --card: #FFFFFF; --dark: #0D0D0D;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 52px; background: var(--bg);
+      border-bottom: 1px solid transparent; transition: border-color .3s, background .3s;
+    }
+    nav.scrolled { border-color: var(--border); background: rgba(248,246,242,.94); backdrop-filter: blur(10px); }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -.5px; color: var(--fg); text-decoration: none; cursor: pointer; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 40px; align-items: center; }
+    .nav-links a { font-size: 12.5px; font-weight: 500; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta { background: var(--fg) !important; color: var(--bg) !important; padding: 10px 24px; border-radius: 100px; }
+    .nav-cta:hover { background: var(--accent) !important; color: #fff !important; }
+
+    /* PAGES */
+    #home-page { display: block; }
+    #project-page { display: none; min-height: 100vh; }
+    #project-page.active { display: block; }
+    #home-page.hidden { display: none; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 320px;
+      align-items: end; padding: 140px 52px 80px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 65% 65% at 85% 15%, rgba(232,66,26,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 28px;
+    }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1.5px; background: var(--accent); }
+    .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(58px, 10vw, 140px); font-weight: 800; line-height: .88; letter-spacing: -4px; margin-bottom: 44px; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 17px; line-height: 1.7; color: #444; max-width: 540px; margin-bottom: 48px; }
+    .hero-bio strong { color: var(--fg); font-weight: 600; }
+    .hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .hero-right { display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px; gap: 40px; }
+    .stat { text-align: right; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; line-height: 1; color: var(--fg); }
+    .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; letter-spacing: .4px; }
+    .hero-scroll { position: absolute; bottom: 36px; left: 52px; display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+    .scroll-line { width: 52px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+    .scroll-line::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: lineSlide 2.2s ease infinite; }
+    @keyframes lineSlide { to { left: 100%; } }
+
+    /* BUTTONS */
+    .btn { display: inline-block; text-decoration: none; cursor: pointer; border: none; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; padding: 14px 34px; border-radius: 100px; transition: all .22s; }
+    .btn-dark { background: var(--fg); color: var(--bg); }
+    .btn-dark:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-ghost { border: 1.5px solid var(--border); color: var(--fg); background: transparent; }
+    .btn-ghost:hover { border-color: var(--fg); transform: translateY(-2px); }
+
+    /* MARQUEE */
+    .marquee-wrap { background: var(--dark); overflow: hidden; padding: 15px 0; }
+    .marquee-inner { display: flex; gap: 48px; white-space: nowrap; animation: marquee 22s linear infinite; }
+    .mi { font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; flex-shrink: 0; color: rgba(255,255,255,.5); }
+    .mi-dot { color: var(--accent) !important; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTION */
+    .section { padding: 120px 52px; }
+    .sec-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .sec-title { font-family: 'Syne', sans-serif; font-size: clamp(38px, 5.5vw, 68px); font-weight: 800; line-height: .95; letter-spacing: -2px; }
+    .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 64px; }
+    .sec-count { font-family: 'Syne', sans-serif; font-size: 88px; font-weight: 800; color: var(--border); line-height: 1; }
+
+    /* PROJECTS */
+    .proj-list { display: flex; flex-direction: column; }
+    .proj-row { display: grid; grid-template-columns: 72px 1fr 160px 48px; align-items: center; gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: padding .2s, background .2s, margin .2s; border-radius: 6px; }
+    .proj-row:first-child { border-top: 1px solid var(--border); }
+    .proj-row:hover { background: var(--card); padding-left: 28px; padding-right: 28px; margin: 0 -28px; }
+    .proj-num { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1px; }
+    .proj-title { font-family: 'Syne', sans-serif; font-size: clamp(20px, 2.8vw, 34px); font-weight: 700; letter-spacing: -.5px; margin-bottom: 6px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { font-size: 10.5px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); background: var(--border); padding: 3px 10px; border-radius: 100px; }
+    .tag-accent { background: var(--accent); color: #fff; }
+    .proj-yr { font-size: 12.5px; color: var(--muted); }
+    .proj-arrow { width: 42px; height: 42px; border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--muted); transition: all .22s; }
+    .proj-row:hover .proj-arrow { background: var(--fg); border-color: var(--fg); color: var(--bg); transform: rotate(45deg); }
+
+    /* ABOUT */
+    #about { background: var(--card); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .about-copy p { font-size: 16.5px; line-height: 1.8; color: #333; margin-bottom: 20px; }
+    .about-copy strong { color: var(--fg); font-weight: 600; }
+    .about-copy a { color: var(--accent); text-decoration: none; }
+    .detail-block { margin-bottom: 36px; }
+    .detail-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { font-size: 12.5px; font-weight: 500; padding: 7px 16px; border: 1.5px solid var(--border); border-radius: 100px; color: var(--fg); transition: all .2s; }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .edu-item { margin-bottom: 16px; }
+    .edu-name { font-weight: 600; font-size: 14px; }
+    .edu-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+    /* TOOLS */
+    .tools-strip { background: var(--dark); padding: 80px 52px; }
+    .tools-strip .sec-label { color: rgba(255,255,255,.35); }
+    .tools-strip .sec-title { color: #fff; margin-top: 8px; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 14px; margin-top: 48px; }
+    .tool { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 18px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,.62); transition: all .2s; }
+    .tool:hover { background: rgba(255,255,255,.09); color: #fff; }
+    .tool-ico { font-size: 19px; flex-shrink: 0; }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .contact-big { font-family: 'Syne', sans-serif; font-size: clamp(44px, 6.5vw, 88px); font-weight: 800; letter-spacing: -2.5px; line-height: .92; margin-bottom: 28px; }
+    .contact-big em { font-style: italic; color: var(--accent); }
+    .contact-note { font-size: 15.5px; color: #555; line-height: 1.65; margin-bottom: 32px; }
+    .contact-cards { display: flex; flex-direction: column; gap: 14px; }
+    .contact-card { display: flex; align-items: center; gap: 14px; padding: 16px 22px; border: 1.5px solid var(--border); border-radius: 14px; font-size: 14.5px; font-weight: 500; color: var(--fg); text-decoration: none; transition: all .22s; }
+    .contact-card:hover { border-color: var(--accent); color: var(--accent); transform: translateX(8px); }
+    .cc-ico { font-size: 20px; flex-shrink: 0; }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: rgba(255,255,255,.4); padding: 36px 52px; display: flex; justify-content: space-between; align-items: center; }
+    .foot-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: #fff; }
+    .foot-logo span { color: var(--accent); }
+    footer p { font-size: 12.5px; }
+
+    /* PROJECT DETAIL */
+    #project-page { padding-top: 96px; }
+    .pd-hero { padding: 56px 52px; border-bottom: 1px solid var(--border); }
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: none; cursor: pointer; margin-bottom: 36px; padding: 0; transition: color .2s; }
+    .back-btn:hover { color: var(--accent); }
+    .back-btn svg { transition: transform .2s; }
+    .back-btn:hover svg { transform: translateX(-4px); }
+    .pd-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; align-items: center; }
+    .pd-title { font-family: 'Syne', sans-serif; font-size: clamp(44px, 8vw, 104px); font-weight: 800; letter-spacing: -3px; line-height: .9; margin-bottom: 28px; }
+    .pd-desc { font-size: 17px; line-height: 1.7; color: #444; max-width: 700px; }
+    .pd-desc strong { color: var(--fg); }
+    .pd-body { padding: 80px 52px; max-width: 860px; }
+    .ds { margin-bottom: 60px; }
+    .ds h3 { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 700; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .ds p { font-size: 15.5px; line-height: 1.8; color: #333; margin-bottom: 14px; }
+    .ds ul { list-style: none; }
+    .ds ul li { display: flex; gap: 12px; font-size: 15px; line-height: 1.7; color: #333; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .ds ul li::before { content: '\2192'; color: var(--accent); flex-shrink: 0; }
+    .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 18px; margin-top: 22px; }
+    .res-card { background: var(--dark); color: #fff; border-radius: 18px; padding: 30px 20px; text-align: center; }
+    .res-n { font-family: 'Syne', sans-serif; font-size: 38px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 8px; }
+    .res-l { font-size: 11.5px; color: rgba(255,255,255,.55); letter-spacing: .5px; }
+    .link-list { display: flex; flex-direction: column; gap: 10px; }
+    .ext-link { display: flex; align-items: center; gap: 12px; padding: 13px 18px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 13.5px; font-weight: 500; color: var(--fg); text-decoration: none; transition: all .2s; }
+    .ext-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* MOBILE */
+    @media (max-width: 800px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 110px 24px 60px; min-height: auto; }
+      .hero-right { display: none; }
+      .hero-scroll { left: 24px; }
+      .section { padding: 72px 24px; }
+      .sec-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .sec-count { display: none; }
+      .proj-row { grid-template-columns: 52px 1fr 40px; }
+      .proj-yr { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .tools-strip { padding: 60px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      footer { padding: 28px 24px; flex-direction: column; gap: 12px; text-align: center; }
+      .pd-hero { padding: 36px 24px; }
+      .pd-body { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-logo" onclick="showHome()"><span>Q</span>uyen.</span>
+  <div class="nav-links">
+    <a href="#work" onclick="navTo('#work');return false;">Work</a>
+    <a href="#about" onclick="navTo('#about');return false;">About</a>
+    <a href="#contact" onclick="navTo('#contact');return false;">Contact</a>
+    <a href="mailto:phamdotuquyen@gmail.com" class="nav-cta">Hire me</a>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="home-page">
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Marketing &middot; AI &middot; Content &middot; Strategy</div>
+      <h1 class="hero-name">
+        Pham<br>
+        Do Tu<br>
+        <em>Quyen</em>
+      </h1>
+      <p class="hero-bio">
+        Marketing Digital graduate <strong>(2026)</strong>, specialising at the crossroads of
+        <strong>brand strategy, content creation, and AI automation</strong>.
+        3 years of hands-on experience across social media, e-commerce, and digital campaigns.
+      </p>
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-dark" onclick="navTo('#work');return false;">View my work</a>
+        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-ghost">Let's talk</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="stat"><div class="stat-num">150K+</div><div class="stat-lbl">Reels views</div></div>
+      <div class="stat"><div class="stat-num">+75%</div><div class="stat-lbl">Audience growth</div></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-lbl">AI articles written</div></div>
+      <div class="stat"><div class="stat-num">10+</div><div class="stat-lbl">Webflow pages built</div></div>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <span class="mi">Social Media</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Content Creation</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Brand Strategy</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">AI Automation</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Webflow</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">SEO &amp; GEO</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">E-commerce</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Community Management</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Video Editing</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Social Media</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Content Creation</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Brand Strategy</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">AI Automation</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Webflow</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">SEO &amp; GEO</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">E-commerce</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Community Management</span><span class="mi mi-dot">&#10022;</span>
+      <span class="mi">Video Editing</span><span class="mi mi-dot">&#10022;</span>
+    </div>
+  </div>
+
+  <section class="section" id="work">
+    <div class="sec-header reveal">
+      <div><div class="sec-label">Selected work</div><h2 class="sec-title">Projects</h2></div>
+      <div class="sec-count">06</div>
+    </div>
+    <div class="proj-list">
+      <div class="proj-row reveal" onclick="showProject('achille')">
+        <div class="proj-num">01</div>
+        <div>
+          <div class="proj-title">Achille.AI</div>
+          <div class="tags"><span class="tag tag-accent">2026</span><span class="tag">Content Strategy</span><span class="tag">AI</span><span class="tag">Webflow</span><span class="tag">SEO</span></div>
+        </div>
+        <div class="proj-yr">Jan &ndash; Jul 2026</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+      <div class="proj-row reveal" onclick="showProject('amazon')">
+        <div class="proj-num">02</div>
+        <div>
+          <div class="proj-title">Nail Treatment &mdash; Amazon</div>
+          <div class="tags"><span class="tag tag-accent">2025</span><span class="tag">Branding</span><span class="tag">E-commerce</span><span class="tag">UGC</span><span class="tag">Amazon A+</span></div>
+        </div>
+        <div class="proj-yr">Sep 2025 &ndash; Mar 2026</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+      <div class="proj-row reveal" onclick="showProject('apostolos')">
+        <div class="proj-num">03</div>
+        <div>
+          <div class="proj-title">Apostolos Mission Intl.</div>
+          <div class="tags"><span class="tag tag-accent">2025</span><span class="tag">Social Media</span><span class="tag">Content</span><span class="tag">Strategy</span><span class="tag">Instagram</span></div>
+        </div>
+        <div class="proj-yr">Jan &ndash; Oct 2025</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+      <div class="proj-row reveal" onclick="showProject('mocnhien')">
+        <div class="proj-num">04</div>
+        <div>
+          <div class="proj-title">Moc Nhien Villa</div>
+          <div class="tags"><span class="tag tag-accent">2025</span><span class="tag">Account Management</span><span class="tag">Filming &amp; Editing</span><span class="tag">Meta</span></div>
+        </div>
+        <div class="proj-yr">2025</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+      <div class="proj-row reveal" onclick="showProject('mostro')">
+        <div class="proj-num">05</div>
+        <div>
+          <div class="proj-title">MOSTRO.XYZ</div>
+          <div class="tags"><span class="tag">2024</span><span class="tag">Artist Promotion</span><span class="tag">Social Media</span><span class="tag">Podcast</span></div>
+        </div>
+        <div class="proj-yr">Sep 2024 &ndash; Jan 2025</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+      <div class="proj-row reveal" onclick="showProject('sml')">
+        <div class="proj-num">06</div>
+        <div>
+          <div class="proj-title">SML Import Export</div>
+          <div class="tags"><span class="tag">2024</span><span class="tag">Marketing</span><span class="tag">Events</span><span class="tag">Content</span></div>
+        </div>
+        <div class="proj-yr">Mar &ndash; Jun 2024</div>
+        <div class="proj-arrow">&#8599;</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="sec-header reveal">
+      <div><div class="sec-label">Who I am</div><h2 class="sec-title">About me</h2></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>I'm <strong>Quyen</strong> &mdash; a Marketing Digital graduate (2026) from Ecor/Digital College in Paris, specialising at the crossroads of <strong>brand strategy, content creation, and AI-driven marketing</strong>.</p>
+        <p>Over 3 years I've worked across social media management, e-commerce branding, freelance strategy, and AI content automation &mdash; from building a Facebook page from scratch to writing 50+ articles on AI and deploying Webflow sites end-to-end.</p>
+        <p>I speak <strong>English (C2)</strong>, <strong>Vietnamese (C2)</strong>, and <strong>French (B2)</strong>. Outside of work: MMA, Muay Thai, Brazilian Jiu-Jitsu, painting, and running 5&ndash;10K.</p>
+        <p style="margin-top:32px;"><a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark" style="font-size:13px;">Get in touch</a></p>
+      </div>
+      <div class="reveal">
+        <div class="detail-block">
+          <div class="detail-lbl">Soft skills</div>
+          <div class="chips"><span class="chip">Communication</span><span class="chip">Teamwork</span><span class="chip">Problem solving</span><span class="chip">Creativity</span><span class="chip">Time management</span></div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-lbl">Languages</div>
+          <div class="chips"><span class="chip">English &mdash; C2</span><span class="chip">Vietnamese &mdash; C2</span><span class="chip">French &mdash; B2</span></div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-lbl">Education</div>
+          <div class="edu-item"><div class="edu-name">Ecor / Digital College</div><div class="edu-sub">Bachelor 3 Marketing Digital &amp; Social Media &middot; 2023&ndash;2026</div></div>
+          <div class="edu-item"><div class="edu-name">ESAD Orl&eacute;ans</div><div class="edu-sub">Classe Pr&eacute;paratoire Artistique &middot; 2022&ndash;2023</div></div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-lbl">Interests</div>
+          <div class="chips"><span class="chip">MMA / Muay Thai / BJJ</span><span class="chip">Painting &amp; sculpture</span><span class="chip">Video editing</span><span class="chip">5K / 10K running</span><span class="chip">Reading</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tools-strip">
+    <div class="sec-label">My toolkit</div>
+    <h2 class="sec-title">Tools &amp; Skills</h2>
+    <div class="tools-grid">
+      <div class="tool"><span class="tool-ico">&#127912;</span>Adobe Creative Suite</div>
+      <div class="tool"><span class="tool-ico">&#9986;&#65039;</span>CapCut &amp; Canva</div>
+      <div class="tool"><span class="tool-ico">&#128202;</span>Meta Business Suite</div>
+      <div class="tool"><span class="tool-ico">&#127758;</span>Webflow &amp; WordPress</div>
+      <div class="tool"><span class="tool-ico">&#128193;</span>Google Suite</div>
+      <div class="tool"><span class="tool-ico">&#129302;</span>Claude &amp; ChatGPT</div>
+      <div class="tool"><span class="tool-ico">&#128266;</span>ElevenLabs &amp; Reve AI</div>
+      <div class="tool"><span class="tool-ico">&#128187;</span>Claude Code / Cowork</div>
+      <div class="tool"><span class="tool-ico">&#128269;</span>Getmint (SEO &amp; GEO)</div>
+    </div>
+  </div>
+
+  <section class="section" id="contact">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-big">Let's<br>work<br><em>together.</em></div>
+        <p class="contact-note">Open to roles in marketing, AI &amp; digital strategy &mdash; &Icirc;le-de-France and beyond.</p>
+        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark">Send me an email</a>
+      </div>
+      <div class="contact-cards reveal">
+        <a href="mailto:phamdotuquyen@gmail.com" class="contact-card"><span class="cc-ico">&#9993;&#65039;</span>phamdotuquyen@gmail.com</a>
+        <a href="https://linkedin.com/in/quyen" target="_blank" class="contact-card"><span class="cc-ico">&#128188;</span>linkedin.com/in/quyen</a>
+        <a href="https://pdtuquyen41a6.myportfolio.com/" target="_blank" class="contact-card"><span class="cc-ico">&#128444;&#65039;</span>Adobe Portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-logo"><span>Q</span>uyen.</div>
+    <p>&copy; 2026 Pham Do Tu Quyen</p>
+    <p>phamdotuquyen@gmail.com</p>
+  </footer>
+
+</div><!-- /home-page -->
+
+
+<!-- PROJECT PAGE -->
+<div id="project-page">
+  <div class="pd-hero">
+    <button class="back-btn" onclick="showHome()">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 2.5L4.5 7.5L9.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to all projects
+    </button>
+    <div class="pd-meta" id="pd-meta"></div>
+    <h1 class="pd-title" id="pd-title"></h1>
+    <p class="pd-desc" id="pd-desc"></p>
+  </div>
+  <div class="pd-body" id="pd-body"></div>
+</div>
+
+
+<script>
+var P = {
+  achille: {
+    title: 'Achille.AI', year: '2026',
+    role: 'Responsable Communication & Marketing',
+    period: 'January 2026 – July 2026',
+    tags: ['Content Strategy','AI','Webflow','SEO / GEO','LinkedIn'],
+    desc: 'Full-stack marketing role at an AI startup — <strong>50+ articles</strong>, 10+ Webflow pages, and AI automation pipelines, all built solo.',
+    body: '<div class="ds"><h3>Overview</h3><p>As Communication & Marketing Manager at Achille.AI, I owned the brand\'s entire content presence — editorial strategy, web publishing, SEO/GEO monitoring, and automation workflows. Working fully autonomously, I built the content infrastructure from the ground up.</p></div><div class="ds"><h3>What I did</h3><ul><li>Wrote 50+ articles covering AI, tech, and customer service — with measurable engagement on LinkedIn.</li><li>Designed and deployed 10+ Webflow pages and landing pages from scratch: design, integration, and publishing in total autonomy.</li><li>Built 3–5 automations via Claude & Claude Code: content pipelines, reporting dashboards, editorial workflows.</li><li>Ran SEO & GEO monitoring on 5–10 competitors using Getmint.</li><li>Managed LinkedIn strategy: +10–30% increase in reach & engagement.</li></ul></div><div class="ds"><h3>Results</h3><div class="res-grid"><div class="res-card"><div class="res-n">50+</div><div class="res-l">Articles published</div></div><div class="res-card"><div class="res-n">10+</div><div class="res-l">Webflow pages built</div></div><div class="res-card"><div class="res-n">+30%</div><div class="res-l">LinkedIn reach growth</div></div><div class="res-card"><div class="res-n">5</div><div class="res-l">AI automations</div></div></div></div>'
+  },
+  amazon: {
+    title: 'Nail Treatment — Amazon', year: '2025',
+    role: 'Assistant Branding & Marketing (Internship)',
+    period: 'September 2025 – March 2026',
+    tags: ['Branding','E-commerce','UGC','Amazon A+','Video Production'],
+    desc: 'Managed brand image for <strong>nailcare & haircare products</strong> on Amazon — A+ content, UGC product videos, and listing optimisation.',
+    body: '<div class="ds"><h3>Overview</h3><p>During my internship I managed the visual brand identity of multiple nail treatment and haircare product lines on Amazon — focused on optimising listings and driving conversion through strong visual content.</p></div><div class="ds"><h3>What I did</h3><ul><li>Managed brand image for nailcare & haircare products: page optimisation and visual positioning on Amazon.</li><li>Produced UGC promotional videos and A+ content images for the Tobcharm brand.</li><li>Created desktop and mobile-optimised A+ image sets for product detail pages.</li><li>Developed brand communication materials for upcoming launches (Uauko — in progress).</li></ul></div><div class="ds"><h3>Brand: Tobcharm</h3><p>UGC content, product promotion video, graphic design for Amazon listing and A+ images.</p><div class="link-list"><a href="https://a.co/d/0fOK58EB" target="_blank" class="ext-link">&#8599; View Tobcharm on Amazon</a></div></div>'
+  },
+  apostolos: {
+    title: 'Apostolos Mission Intl.', year: '2025',
+    role: 'Social Media & Community Manager (Freelance)',
+    period: 'January 2025 – October 2025',
+    tags: ['Social Media','Content Strategy','Instagram','Community','Freelance'],
+    desc: 'Built a social presence from <strong>zero to 150K+ Reels views</strong> in 6 months — solo filming, editing, and publishing.',
+    body: '<div class="ds"><h3>Overview</h3><p>I was brought in as a freelance Social Media Manager to build Apostolos Mission International\'s digital presence from zero. Over 9 months I ran the full content pipeline independently.</p></div><div class="ds"><h3>What I did</h3><ul><li>Built social presence from scratch — 150K+ Reels views in 6 months, solo (filming, editing, publishing).</li><li>Sustained 4–5 pieces of content per week: strategy, creation, editing, and performance analysis.</li><li>Developed a full brand voice, content strategy, and visual identity guide.</li><li>Value-driven content that increased interactions and views by +70% in the first month.</li></ul></div><div class="ds"><h3>Results</h3><div class="res-grid"><div class="res-card"><div class="res-n">150K+</div><div class="res-l">Reels views (6 mo.)</div></div><div class="res-card"><div class="res-n">+70%</div><div class="res-l">Engagement month 1</div></div><div class="res-card"><div class="res-n">4–5</div><div class="res-l">Posts per week</div></div></div></div><div class="ds"><h3>Content samples</h3><div class="link-list"><a href="https://www.instagram.com/p/DG2zRebNQ9T/" target="_blank" class="ext-link">&#8599; Instagram — brand content post</a><a href="https://www.instagram.com/p/DGSrKpftQxg/" target="_blank" class="ext-link">&#8599; Instagram — engagement content</a></div></div>'
+  },
+  mocnhien: {
+    title: 'Moc Nhien Villa', year: '2025',
+    role: 'Account Manager – Client Services',
+    period: '2025',
+    tags: ['Account Management','Filming','Editing','Copywriting','Meta Business Suite'],
+    desc: 'Full content production and client management — filming, editing, copywriting, and Meta Business Suite account management.',
+    body: '<div class="ds"><h3>Overview</h3><p>As Account Manager for Moc Nhien Villa, I handled the full content production pipeline — concept, filming, editing, and copywriting — while managing client relationships through Meta Business Suite.</p></div><div class="ds"><h3>What I did</h3><ul><li>Filmed, edited, and wrote copy for Reels and social content promoting Moc Nhien Villa.</li><li>Built the Facebook page from scratch — measurable audience growth in month 1 without paid ads.</li><li>Managed client communications, follow-ups, and relationship management via Meta Business Suite.</li><li>Maintained content calendar and coordinated deliverables with the client.</li></ul></div><div class="ds"><h3>Content samples</h3><div class="link-list"><a href="https://www.facebook.com/reel/713088154823954/" target="_blank" class="ext-link">&#8599; Facebook Reel — villa content</a><a href="https://www.facebook.com/reel/744190108304572/" target="_blank" class="ext-link">&#8599; Facebook Reel — villa content 2</a></div></div>'
+  },
+  mostro: {
+    title: 'MOSTRO.XYZ', year: '2024',
+    role: 'Social Media & Community Manager',
+    period: 'September 2024 – January 2025',
+    tags: ['Artist Promotion','Social Media','Community','Podcast','Viral Content'],
+    desc: 'Managed social strategy for <strong>3–5 artists</strong> — viral content, podcast curation, brand repositioning, and community building.',
+    body: '<div class="ds"><h3>Overview</h3><p>At MOSTRO.XYZ I managed the social media strategy for a roster of 3–5 artists, combining community management, artist promotion, weekly podcast curation, and brand repositioning.</p></div><div class="ds"><h3>What I did</h3><ul><li>Managed social strategy for 3–5 artists: viral content, editing, and performance analytics.</li><li>Personalised client support and campaign management to grow artist visibility and fan loyalty.</li><li>Collaborated with artists on live interviews and video content to maximise engagement.</li><li>Produced educational content to reposition MOSTRO.XYZ\'s brand voice and authority.</li><li>Scheduled and curated weekly podcast content with brand-consistent visuals and hook captions.</li></ul></div><div class="ds"><h3>Content samples</h3><div class="link-list"><a href="https://www.youtube.com/live/cweB8PQ_AZQ" target="_blank" class="ext-link">&#8599; YouTube Live — artist event</a><a href="https://www.instagram.com/reel/DA5yvBuiliD/" target="_blank" class="ext-link">&#8599; Instagram Reel — artist promo</a><a href="https://www.instagram.com/reel/DBOe8mMi2dU/" target="_blank" class="ext-link">&#8599; Instagram Reel — artist promo 2</a><a href="https://www.instagram.com/reel/DBLgNkZiPZs/" target="_blank" class="ext-link">&#8599; Instagram Reel — podcast</a><a href="https://www.instagram.com/reel/DC8_XQOiEX/" target="_blank" class="ext-link">&#8599; Instagram Reel — podcast 2</a></div></div>'
+  },
+  sml: {
+    title: 'SML Import Export', year: '2024',
+    role: 'Assistant Marketing (Internship)',
+    period: 'March 2024 – June 2024',
+    tags: ['Marketing','Social Media','Events','Content Production','Community'],
+    desc: 'Marketing internship generating <strong>+75% audience growth</strong> through social content, visual storytelling, and event support.',
+    body: '<div class="ds"><h3>Overview</h3><p>My first marketing internship — I ran social media content production and supported the commercial team during events, achieving significant audience growth through storytelling and visual hooks.</p></div><div class="ds"><h3>What I did</h3><ul><li>Created content generating +75% increase in audience engagement via storytelling, product info, and visual hooks.</li><li>Supported commercial teams during events and produced photo & video assets.</li><li>Co-managed community events, promoted sponsors, and assisted with e-commerce & sales service.</li><li>Delivered graphic design work for clients as an additional service.</li></ul></div><div class="ds"><h3>Results</h3><div class="res-grid"><div class="res-card"><div class="res-n">+75%</div><div class="res-l">Audience growth</div></div><div class="res-card"><div class="res-n">4+</div><div class="res-l">Events supported</div></div></div></div><div class="ds"><h3>Content samples</h3><div class="link-list"><a href="https://www.facebook.com/reel/970809507725693/" target="_blank" class="ext-link">&#8599; Facebook Reel — product content</a><a href="https://www.facebook.com/reel/1303986714338108/" target="_blank" class="ext-link">&#8599; Facebook Reel — brand story</a><a href="https://www.facebook.com/reel/459198823468274/" target="_blank" class="ext-link">&#8599; Facebook Reel — promotion</a></div></div>'
+  }
+};
+
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+function showHome() {
+  document.getElementById('home-page').classList.remove('hidden');
+  document.getElementById('project-page').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  initReveal();
+}
+
+function navTo(sel) {
+  document.getElementById('home-page').classList.remove('hidden');
+  document.getElementById('project-page').classList.remove('active');
+  setTimeout(function() {
+    var el = document.querySelector(sel);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 80);
+}
+
+function showProject(id) {
+  var d = P[id]; if (!d) return;
+  document.getElementById('pd-meta').innerHTML =
+    '<span class="tag tag-accent">' + d.year + '</span>' +
+    d.tags.map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('') +
+    '<span class="tag" style="margin-left:auto;opacity:.7">' + d.period + '</span>';
+  document.getElementById('pd-title').textContent = d.title;
+  document.getElementById('pd-desc').innerHTML = '<strong>' + d.role + '</strong> — ' + d.desc;
+  document.getElementById('pd-body').innerHTML = d.body;
+  document.getElementById('home-page').classList.add('hidden');
+  document.getElementById('project-page').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initReveal() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    el.classList.remove('in'); obs.observe(el);
+  });
+}
+initReveal();
+</script>
+</body>
+</html>
