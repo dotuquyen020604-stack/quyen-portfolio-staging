@@ -667,6 +667,14 @@ document.querySelectorAll('.lang-opt').forEach(function(b){
 });
 document.addEventListener('click',function(){langDd.classList.remove('open');});
 setLang(LANG);
+
+// VISITOR COUNTER (GoatCounter) — only on the live site, not staging
+if(location.hostname!=='localhost'&&location.pathname.indexOf('staging')===-1){
+  var gc=document.createElement('script');
+  gc.setAttribute('data-goatcounter','https://quyenpham.goatcounter.com/count');
+  gc.async=true;gc.src='https://gc.zgo.at/count.js';
+  document.body.appendChild(gc);
+}
 </script>
 </body>
 </html>
