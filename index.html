@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quyen Pham — Marketing &amp; AI</title>
+<title data-i18n="page.title">Quyen Pham — Marketing &amp; AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -52,6 +52,21 @@ nav.scrolled .nav-links a:hover{color:var(--fg)}
 nav.scrolled .nav-cta{background:var(--accent)!important;color:var(--bg)!important;border-color:transparent!important}
 .nav-cta:hover{background:var(--gold)!important;color:#fff!important;border-color:var(--gold)!important}
 .nav-cta::after{display:none!important}
+.nav-right{display:flex;align-items:center;gap:22px}
+
+/* LANG DROPDOWN */
+.lang-dd{position:relative}
+.lang-toggle{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid rgba(250,247,241,.25);color:rgba(250,247,241,.75);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:100px;cursor:pointer;transition:all .25s}
+.lang-toggle:hover{border-color:var(--gold);color:var(--gold)}
+nav.scrolled .lang-toggle{border-color:var(--border);color:var(--fg)}
+nav.scrolled .lang-toggle:hover{border-color:var(--gold);color:var(--gold)}
+.lang-toggle svg{transition:transform .25s}
+.lang-dd.open .lang-toggle svg{transform:rotate(180deg)}
+.lang-menu{position:absolute;top:calc(100% + 10px);right:0;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:6px;min-width:150px;box-shadow:0 12px 32px rgba(13,13,13,.12);opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .25s;z-index:300}
+.lang-dd.open .lang-menu{opacity:1;visibility:visible;transform:none}
+.lang-opt{display:block;width:100%;text-align:left;background:none;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:.5px;color:var(--fg);padding:10px 14px;border-radius:9px;cursor:pointer;transition:all .15s}
+.lang-opt:hover{background:var(--bg);color:var(--accent)}
+.lang-opt.active{color:var(--gold);font-weight:600}
 
 /* PAGES */
 #home-page{display:block}#project-page{display:none;min-height:100vh}
@@ -253,11 +268,20 @@ footer p{font-size:12.5px}
 
 <nav id="nav">
   <span class="nav-logo" onclick="showHome()"><span>Q</span>uyen.</span>
-  <div class="nav-links">
-    <a href="#" onclick="navTo('#work');return false;">Work</a>
-    <a href="#" onclick="navTo('#about');return false;">About</a>
-    <a href="#" onclick="navTo('#contact');return false;">Contact</a>
-    <a href="mailto:phamdotuquyen@gmail.com" class="nav-cta">Hire me</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#" onclick="navTo('#work');return false;" data-i18n="nav.work">Work</a>
+      <a href="#" onclick="navTo('#about');return false;" data-i18n="nav.about">About</a>
+      <a href="#" onclick="navTo('#contact');return false;" data-i18n="nav.contact">Contact</a>
+      <a href="mailto:phamdotuquyen@gmail.com" class="nav-cta" data-i18n="nav.hire">Hire me</a>
+    </div>
+    <div class="lang-dd" id="lang-dd">
+      <button class="lang-toggle" id="lang-toggle" aria-label="Language"><span id="lang-cur">EN</span><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="lang-menu" id="lang-menu">
+        <button class="lang-opt" data-lang="en">EN — English</button>
+        <button class="lang-opt" data-lang="fr">FR — Français</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -269,27 +293,27 @@ footer p{font-size:12.5px}
     <div id="hero-blob"></div>
 
     <div class="hero-left">
-      <div class="hero-eyebrow">Marketing &middot; AI &middot; Content &middot; Strategy</div>
+      <div class="hero-eyebrow" data-i18n="hero.eyebrow">Marketing &middot; AI &middot; Content &middot; Strategy</div>
       <h1 class="hero-name">
         <span class="hn-block"><span class="hn-word"><span class="hn-inner">Pham</span></span></span>
         <span class="hn-block"><span class="hn-word"><span class="hn-inner">Do Tu</span></span></span>
         <span class="hn-block"><span class="hn-word"><span class="hn-inner"><span style="font-style:normal">Q</span>uyen</span></span></span>
       </h1>
-      <p class="hero-bio">Marketing Digital graduate <strong>(2026)</strong>, specialising at the crossroads of <strong>brand strategy, content creation, and AI automation</strong>. 3 years of hands-on experience across social media, e-commerce, and digital campaigns.</p>
+      <p class="hero-bio" data-i18n="hero.bio">Marketing Digital graduate <strong>(2026)</strong>, specialising at the crossroads of <strong>brand strategy, content creation, and AI automation</strong>. 3 years of hands-on experience across social media, e-commerce, and digital campaigns.</p>
       <div class="hero-actions">
-        <a href="#" class="btn btn-dark" onclick="navTo('#work');return false;">View my work</a>
-        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-ghost">Let's talk</a>
+        <a href="#" class="btn btn-dark" onclick="navTo('#work');return false;" data-i18n="hero.cta1">View my work</a>
+        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-ghost" data-i18n="hero.cta2">Let's talk</a>
       </div>
     </div>
 
     <div class="hero-right">
-      <div class="stat"><div class="stat-num" data-target="150" data-suffix="K+">0K+</div><div class="stat-lbl">Reels views</div></div>
-      <div class="stat"><div class="stat-num">+75%</div><div class="stat-lbl">Audience growth</div></div>
-      <div class="stat"><div class="stat-num" data-target="50" data-suffix="+">0+</div><div class="stat-lbl">AI articles written</div></div>
-      <div class="stat"><div class="stat-num" data-target="10" data-suffix="+">0+</div><div class="stat-lbl">Webflow pages built</div></div>
+      <div class="stat"><div class="stat-num" data-target="150" data-suffix="K+">0K+</div><div class="stat-lbl" data-i18n="stat.reels">Reels views</div></div>
+      <div class="stat"><div class="stat-num">+75%</div><div class="stat-lbl" data-i18n="stat.audience">Audience growth</div></div>
+      <div class="stat"><div class="stat-num" data-target="50" data-suffix="+">0+</div><div class="stat-lbl" data-i18n="stat.articles">AI articles written</div></div>
+      <div class="stat"><div class="stat-num" data-target="10" data-suffix="+">0+</div><div class="stat-lbl" data-i18n="stat.webflow">Webflow pages built</div></div>
     </div>
 
-    <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
+    <div class="hero-scroll"><div class="scroll-line"></div><span data-i18n="hero.scroll">Scroll</span></div>
   </section>
 
   <div class="marquee-wrap">
@@ -317,7 +341,7 @@ footer p{font-size:12.5px}
 
   <section class="section" id="work">
     <div class="sec-header reveal">
-      <div><div class="sec-label">Selected work</div><h2 class="sec-title">Projects</h2></div>
+      <div><div class="sec-label" data-i18n="work.label">Selected work</div><h2 class="sec-title" data-i18n="work.title">Projects</h2></div>
       <div class="sec-count">06</div>
     </div>
     <div class="proj-list">
@@ -362,30 +386,30 @@ footer p{font-size:12.5px}
 
   <section class="section" id="about" style="background:var(--card)">
     <div class="sec-header reveal">
-      <div><div class="sec-label">Who I am</div><h2 class="sec-title">About me</h2></div>
+      <div><div class="sec-label" data-i18n="about.label">Who I am</div><h2 class="sec-title" data-i18n="about.title">About me</h2></div>
     </div>
     <div class="about-grid">
       <div class="about-copy reveal">
-        <p>I'm <strong>Quyen</strong> &mdash; a Marketing Digital graduate (2026) from Ecor/Digital College in Paris, specialising at the crossroads of <strong>brand strategy, content creation, and AI-driven marketing</strong>.</p>
-        <p>Over 3 years I've worked across social media management, e-commerce branding, freelance strategy, and AI content automation &mdash; from building a Facebook page from scratch to writing 50+ articles on AI and deploying Webflow sites end-to-end.</p>
-        <p>I speak <strong>English (C2)</strong>, <strong>Vietnamese (C2)</strong>, and <strong>French (B2)</strong>. Outside of work: MMA, Muay Thai, Brazilian Jiu-Jitsu, painting, and running 5&ndash;10K.</p>
-        <p style="margin-top:32px"><a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark" style="font-size:13px">Get in touch</a></p>
+        <p data-i18n="about.p1">I'm <strong>Quyen</strong> &mdash; a Marketing Digital graduate (2026) from Ecor/Digital College in Paris, specialising at the crossroads of <strong>brand strategy, content creation, and AI-driven marketing</strong>.</p>
+        <p data-i18n="about.p2">Over 3 years I've worked across social media management, e-commerce branding, freelance strategy, and AI content automation &mdash; from building a Facebook page from scratch to writing 50+ articles on AI and deploying Webflow sites end-to-end.</p>
+        <p data-i18n="about.p3">I speak <strong>English (C2)</strong>, <strong>Vietnamese (C2)</strong>, and <strong>French (B2)</strong>. Outside of work: MMA, Muay Thai, Brazilian Jiu-Jitsu, painting, and running 5&ndash;10K.</p>
+        <p style="margin-top:32px"><a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark" style="font-size:13px" data-i18n="about.cta">Get in touch</a></p>
       </div>
       <div class="reveal">
-        <div class="detail-block"><div class="detail-lbl">Soft skills</div><div class="chips"><span class="chip">Communication</span><span class="chip">Teamwork</span><span class="chip">Problem solving</span><span class="chip">Creativity</span><span class="chip">Time management</span></div></div>
-        <div class="detail-block"><div class="detail-lbl">Languages</div><div class="chips"><span class="chip">English &mdash; C2</span><span class="chip">Vietnamese &mdash; C2</span><span class="chip">French &mdash; B2</span></div></div>
-        <div class="detail-block"><div class="detail-lbl">Education</div>
+        <div class="detail-block"><div class="detail-lbl" data-i18n="detail.softskills">Soft skills</div><div class="chips"><span class="chip" data-i18n="chip.communication">Communication</span><span class="chip" data-i18n="chip.teamwork">Teamwork</span><span class="chip" data-i18n="chip.problem">Problem solving</span><span class="chip" data-i18n="chip.creativity">Creativity</span><span class="chip" data-i18n="chip.time">Time management</span></div></div>
+        <div class="detail-block"><div class="detail-lbl" data-i18n="detail.languages">Languages</div><div class="chips"><span class="chip">English &mdash; C2</span><span class="chip">Vietnamese &mdash; C2</span><span class="chip">French &mdash; B2</span></div></div>
+        <div class="detail-block"><div class="detail-lbl" data-i18n="detail.education">Education</div>
           <div class="edu-item"><div class="edu-name">Ecor / Digital College</div><div class="edu-sub">Bachelor 3 Marketing Digital &amp; Social Media &middot; 2023&ndash;2026</div></div>
           <div class="edu-item"><div class="edu-name">ESAD Orl&eacute;ans</div><div class="edu-sub">Classe Pr&eacute;paratoire Artistique &middot; 2022&ndash;2023</div></div>
         </div>
-        <div class="detail-block"><div class="detail-lbl">Interests</div><div class="chips"><span class="chip">MMA / Muay Thai / BJJ</span><span class="chip">Painting &amp; sculpture</span><span class="chip">Video editing</span><span class="chip">5K / 10K running</span><span class="chip">Reading</span></div></div>
+        <div class="detail-block"><div class="detail-lbl" data-i18n="detail.interests">Interests</div><div class="chips"><span class="chip" data-i18n="chip.mma">MMA / Muay Thai / BJJ</span><span class="chip" data-i18n="chip.painting">Painting &amp; sculpture</span><span class="chip" data-i18n="chip.video">Video editing</span><span class="chip" data-i18n="chip.running">5K / 10K running</span><span class="chip" data-i18n="chip.reading">Reading</span></div></div>
       </div>
     </div>
   </section>
 
   <div class="tools-strip">
-    <div class="sec-label">My toolkit</div>
-    <h2 class="sec-title" style="color:#fff;margin-top:8px">Tools &amp; Skills</h2>
+    <div class="sec-label" data-i18n="tools.label">My toolkit</div>
+    <h2 class="sec-title" style="color:#fff;margin-top:8px" data-i18n="tools.title">Tools &amp; Skills</h2>
     <div class="tools-grid">
       <div class="tool"><span class="tool-ico">&#127912;</span>Adobe Creative Suite</div>
       <div class="tool"><span class="tool-ico">&#9986;&#65039;</span>CapCut &amp; Canva</div>
@@ -402,9 +426,9 @@ footer p{font-size:12.5px}
   <section class="section" id="contact">
     <div class="contact-grid">
       <div class="reveal">
-        <div class="contact-big">Let's<br>work<br><em>together.</em></div>
-        <p class="contact-note">Open to roles in marketing, AI &amp; digital strategy &mdash; &Icirc;le-de-France and beyond.</p>
-        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark">Send me an email</a>
+        <div class="contact-big" data-i18n="contact.big">Let's<br>work<br><em>together.</em></div>
+        <p class="contact-note" data-i18n="contact.note">Open to roles in marketing, AI &amp; digital strategy &mdash; &Icirc;le-de-France and beyond.</p>
+        <a href="mailto:phamdotuquyen@gmail.com" class="btn btn-dark" data-i18n="contact.cta">Send me an email</a>
       </div>
       <div class="contact-cards reveal">
         <a href="mailto:phamdotuquyen@gmail.com" class="contact-card"><span class="cc-ico">&#9993;&#65039;</span>phamdotuquyen@gmail.com</a>
@@ -426,7 +450,7 @@ footer p{font-size:12.5px}
   <div class="pd-hero">
     <button class="back-btn" onclick="showHome()">
       <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 2.5L4.5 7.5L9.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back to all projects
+      <span data-i18n="back">Back to all projects</span>
     </button>
     <div class="pd-meta" id="pd-meta"></div>
     <h1 class="pd-title" id="pd-title"></h1>
@@ -436,6 +460,114 @@ footer p{font-size:12.5px}
 </div>
 
 <script>
+// LANGUAGE (EN / FR)
+var LANG=localStorage.getItem('lang');if(LANG!=='fr')LANG='en';
+
+var T={
+  en:{
+    'page.title':'Quyen Pham — Marketing &amp; AI',
+    'nav.work':'Work',
+    'nav.about':'About',
+    'nav.contact':'Contact',
+    'nav.hire':'Hire me',
+    'hero.eyebrow':'Marketing · AI · Content · Strategy',
+    'hero.bio':'Marketing Digital graduate <strong>(2026)</strong>, specialising at the crossroads of <strong>brand strategy, content creation, and AI automation</strong>. 3 years of hands-on experience across social media, e-commerce, and digital campaigns.',
+    'hero.cta1':'View my work',
+    'hero.cta2':"Let's talk",
+    'stat.reels':'Reels views',
+    'stat.audience':'Audience growth',
+    'stat.articles':'AI articles written',
+    'stat.webflow':'Webflow pages built',
+    'hero.scroll':'Scroll',
+    'work.label':'Selected work',
+    'work.title':'Projects',
+    'about.label':'Who I am',
+    'about.title':'About me',
+    'about.p1':"I'm <strong>Quyen</strong> — a Marketing Digital graduate (2026) from Ecor/Digital College in Paris, specialising at the crossroads of <strong>brand strategy, content creation, and AI-driven marketing</strong>.",
+    'about.p2':"Over 3 years I've worked across social media management, e-commerce branding, freelance strategy, and AI content automation — from building a Facebook page from scratch to writing 50+ articles on AI and deploying Webflow sites end-to-end.",
+    'about.p3':'I speak <strong>English (C2)</strong>, <strong>Vietnamese (C2)</strong>, and <strong>French (B2)</strong>. Outside of work: MMA, Muay Thai, Brazilian Jiu-Jitsu, painting, and running 5–10K.',
+    'about.cta':'Get in touch',
+    'detail.softskills':'Soft skills',
+    'detail.languages':'Languages',
+    'detail.education':'Education',
+    'detail.interests':'Interests',
+    'chip.communication':'Communication',
+    'chip.teamwork':'Teamwork',
+    'chip.problem':'Problem solving',
+    'chip.creativity':'Creativity',
+    'chip.time':'Time management',
+    'chip.mma':'MMA / Muay Thai / BJJ',
+    'chip.painting':'Painting &amp; sculpture',
+    'chip.video':'Video editing',
+    'chip.running':'5K / 10K running',
+    'chip.reading':'Reading',
+    'tools.label':'My toolkit',
+    'tools.title':'Tools &amp; Skills',
+    'contact.big':"Let's<br>work<br><em>together.</em>",
+    'contact.note':'Open to roles in marketing, AI &amp; digital strategy — Île-de-France and beyond.',
+    'contact.cta':'Send me an email',
+    'back':'Back to all projects'
+  },
+  fr:{
+    'page.title':'Quyen Pham — Marketing &amp; IA',
+    'nav.work':'Projets',
+    'nav.about':'À propos',
+    'nav.contact':'Contact',
+    'nav.hire':'Me contacter',
+    'hero.eyebrow':'Marketing · IA · Contenu · Stratégie',
+    'hero.bio':"Diplômée en Marketing Digital <strong>(2026)</strong>, spécialisée à l'intersection de la <strong>stratégie de marque, création de contenu et automatisation IA</strong>. 3 ans d'expérience concrète en réseaux sociaux, e-commerce et campagnes digitales.",
+    'hero.cta1':'Voir mes projets',
+    'hero.cta2':'Parlons-en',
+    'stat.reels':'Vues Reels',
+    'stat.audience':"Croissance d'audience",
+    'stat.articles':'Articles IA rédigés',
+    'stat.webflow':'Pages Webflow créées',
+    'hero.scroll':'Défiler',
+    'work.label':'Travaux sélectionnés',
+    'work.title':'Projets',
+    'about.label':'Qui suis-je',
+    'about.title':'À propos',
+    'about.p1':"Je suis <strong>Quyen</strong> — diplômée en Marketing Digital (2026) de l'Ecor/Digital College à Paris, spécialisée à l'intersection de la <strong>stratégie de marque, création de contenu et marketing piloté par l'IA</strong>.",
+    'about.p2':"Depuis 3 ans, j'ai travaillé en gestion de réseaux sociaux, branding e-commerce, stratégie freelance et automatisation de contenu IA — de la création d'une page Facebook from scratch à la rédaction de 50+ articles sur l'IA et le déploiement de sites Webflow de A à Z.",
+    'about.p3':'Je parle <strong>anglais (C2)</strong>, <strong>vietnamien (C2)</strong> et <strong>français (B2)</strong>. En dehors du travail : MMA, Muay Thai, Jiu-Jitsu brésilien, peinture et course à pied 5–10K.',
+    'about.cta':'Me contacter',
+    'detail.softskills':'Compétences',
+    'detail.languages':'Langues',
+    'detail.education':'Formation',
+    'detail.interests':"Centres d'intérêt",
+    'chip.communication':'Communication',
+    'chip.teamwork':"Travail d'équipe",
+    'chip.problem':'Résolution de problèmes',
+    'chip.creativity':'Créativité',
+    'chip.time':'Gestion du temps',
+    'chip.mma':'MMA / Muay Thai / BJJ',
+    'chip.painting':'Peinture &amp; sculpture',
+    'chip.video':'Montage vidéo',
+    'chip.running':'Course 5K / 10K',
+    'chip.reading':'Lecture',
+    'tools.label':'Mes outils',
+    'tools.title':'Outils &amp; Compétences',
+    'contact.big':'Travaillons<br><em>ensemble.</em>',
+    'contact.note':'Ouverte aux postes en marketing, IA &amp; stratégie digitale — Île-de-France et au-delà.',
+    'contact.cta':'Envoyer un email',
+    'back':'Retour aux projets'
+  }
+};
+
+function setLang(lang){
+  LANG=lang;
+  document.documentElement.lang=lang;
+  localStorage.setItem('lang',lang);
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key=el.getAttribute('data-i18n');
+    if(T[lang]&&T[lang][key]!==undefined){el.innerHTML=T[lang][key];}
+  });
+  document.getElementById('lang-cur').textContent=lang.toUpperCase();
+  document.querySelectorAll('.lang-opt').forEach(function(b){
+    b.classList.toggle('active',b.getAttribute('data-lang')===lang);
+  });
+}
+
 var P={
   achille:{title:'Achille.AI',year:'2026',role:'Responsable Communication & Marketing',period:'January 2026 – July 2026',tags:['Content Strategy','AI','Webflow','SEO / GEO','LinkedIn'],desc:'Full-stack marketing role at an AI startup — <strong>50+ articles</strong>, 10+ Webflow pages, and AI automation pipelines, all built solo.',body:'<div class="ds"><h3>Overview</h3><p>As Communication & Marketing Manager at Achille.AI, I owned the brand\'s entire content presence — editorial strategy, web publishing, SEO/GEO monitoring, and automation workflows. Working fully autonomously, I built the content infrastructure from the ground up.</p></div><div class="ds"><h3>What I did</h3><ul><li>Wrote 50+ articles covering AI, tech, and customer service — with measurable engagement on LinkedIn.</li><li>Designed and deployed 10+ Webflow pages and landing pages from scratch.</li><li>Built 3–5 automations via Claude & Claude Code: content pipelines, reporting dashboards, editorial workflows.</li><li>Ran SEO & GEO monitoring on 5–10 competitors using Getmint.</li><li>Managed LinkedIn strategy: +10–30% increase in reach & engagement.</li></ul></div><div class="ds"><h3>Results</h3><div class="res-grid"><div class="res-card"><div class="res-n">50+</div><div class="res-l">Articles published</div></div><div class="res-card"><div class="res-n">10+</div><div class="res-l">Webflow pages</div></div><div class="res-card"><div class="res-n">+30%</div><div class="res-l">LinkedIn reach</div></div><div class="res-card"><div class="res-n">5</div><div class="res-l">AI automations</div></div></div></div>'},
   amazon:{title:'Nail Treatment — Amazon',year:'2025',role:'Assistant Branding & Marketing (Internship)',period:'September 2025 – March 2026',tags:['Branding','E-commerce','UGC','Amazon A+','Video Production'],desc:'Managed brand image for <strong>nailcare & haircare products</strong> on Amazon — A+ content, UGC product videos, and listing optimisation.',body:'<div class="ds"><h3>Overview</h3><p>I managed the visual brand identity of multiple nail treatment and haircare product lines on Amazon — focused on optimising listings and driving conversion through strong visual content.</p></div><div class="ds"><h3>What I did</h3><ul><li>Managed brand image for nailcare & haircare products on Amazon.</li><li>Produced UGC promotional videos and A+ content images for the Tobcharm brand.</li><li>Created desktop and mobile-optimised A+ image sets for product detail pages.</li><li>Developed brand communication materials for upcoming Uauko launches.</li></ul></div><div class="ds"><h3>Brand: Tobcharm</h3><p>UGC content, product promotion video, graphic design for Amazon listing and A+ images.</p><div class="link-list"><a href="https://a.co/d/0fOK58EB" target="_blank" class="ext-link">&#8599; View Tobcharm on Amazon</a></div></div>'},
@@ -524,6 +656,17 @@ function showProject(id){
   document.getElementById('project-page').classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// LANG DROPDOWN
+var langDd=document.getElementById('lang-dd');
+document.getElementById('lang-toggle').addEventListener('click',function(e){
+  e.stopPropagation();langDd.classList.toggle('open');
+});
+document.querySelectorAll('.lang-opt').forEach(function(b){
+  b.addEventListener('click',function(){setLang(b.getAttribute('data-lang'));langDd.classList.remove('open');});
+});
+document.addEventListener('click',function(){langDd.classList.remove('open');});
+setLang(LANG);
 </script>
 </body>
 </html>
